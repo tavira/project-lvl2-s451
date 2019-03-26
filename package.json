@@ -1,6 +1,6 @@
 {
   "name": "tavira-gendiff",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Compares two configuration files and shows a difference.",
   "main": "dist/index.js",
   "bin": {
@@ -29,6 +29,7 @@
   "homepage": "https://github.com/tavira/project-lvl2-s451#readme",
   "dependencies": {
     "commander": "^2.19.0",
+    "js-yaml": "^3.13.0",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
