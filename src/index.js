@@ -18,8 +18,6 @@ const buildDiffString = (objectBefore, objectAfter) => {
     return [`  + ${key}: ${objectAfter[key]}`];
   });
 
-  
-
   return `{\n${_.flatten([...combined]).join('\n')}\n}`;
 };
 
