@@ -1,72 +1,54 @@
 import _ from 'lodash';
 
-const isObject = obj => (!(obj instanceof Array)) && obj instanceof Object;
+const areKeysObjects = (obj1, obj2) => (_.isPlainObject(obj1) && _.isPlainObject(obj2));
+const isKeyExistsInTwoObjects = (obj1, obj2, key) => (_.has(obj1, key) && _.has(obj2, key));
+const hasKeyIdentityValues = (obj1, obj2, key) => (obj1[key] === obj2[key]);
+const isAddedKey = (obj1, obj2, key) => !_.has(obj1, key) && _.has(obj2, key);
+const isDeletedKey = (obj1, obj2, key) => _.has(obj1, key) && !_.has(obj2, key);
 
 const buildAst = (objectBefore, objectAfter) => {
-  const root = {};
-
   const unionKeysBeforeAfter = _.union(Object.keys(objectBefore), Object.keys(objectAfter));
 
-  const combined = unionKeysBeforeAfter.reduce((acc, key) => {
-    if (_.has(objectBefore, key) && _.has(objectAfter, key)) {
-      if (isObject(objectBefore[key]) && isObject(objectAfter[key])) {
-        const prop = {
-          [key]: {
-            children: buildAst(objectBefore[key], objectAfter[key]),
-            state: 'nested',
-          },
-        };
-        return { ...acc, ...prop };
-      }
-      if ((isObject(objectBefore[key]) && !isObject(objectAfter[key]))
-        || (!isObject(objectBefore[key]) && isObject(objectAfter[key]))) {
-        const prop = {
-          [key]: {
-            value: objectBefore[key],
-            valueAfter: objectAfter[key],
-            state: 'changed',
-          },
-        };
-        return { ...acc, ...prop };
-      }
-      if (objectBefore[key] === objectAfter[key]) {
-        const prop = {
-          [key]: {
-            value: objectBefore[key],
-            state: 'unchanged',
-          },
-        };
-        return { ...acc, ...prop };
-      }
-      const prop = {
-        [key]: {
-          value: objectBefore[key],
-          valueAfter: objectAfter[key],
-          state: 'changed',
-        },
-      };
-      return { ...acc, ...prop };
-    }
-    if (!_.has(objectBefore, key) && _.has(objectAfter, key)) {
-      const prop = {
-        [key]: {
-          valueAfter: objectAfter[key],
-          state: 'added',
-        },
-      };
-      return { ...acc, ...prop };
-    }
-
-    const prop = {
-      [key]: {
-        value: objectBefore[key],
-        state: 'deleted',
+  return unionKeysBeforeAfter.map((key) => {
+    const handleKeysActions = [
+      {
+        check: () => (isKeyExistsInTwoObjects(objectBefore, objectAfter, key)
+                        && areKeysObjects(objectBefore[key], objectAfter[key])),
+        handle: () => ({
+          key, state: 'nested', children: buildAst(objectBefore[key], objectAfter[key]),
+        }),
       },
-    };
-    return { ...acc, ...prop };
-  }, root);
+      {
+        check: () => (isKeyExistsInTwoObjects(objectBefore, objectAfter, key)
+                        && !hasKeyIdentityValues(objectBefore, objectAfter, key)),
+        handle: () => ({
+          key, state: 'changed', valueBefore: objectBefore[key], valueAfter: objectAfter[key],
+        }),
+      },
+      {
+        check: () => (isKeyExistsInTwoObjects(objectBefore, objectAfter, key)
+                        && hasKeyIdentityValues(objectBefore, objectAfter, key)),
+        handle: () => ({
+          key, state: 'unchanged', valueBefore: objectBefore[key], valueAfter: objectAfter[key],
+        }),
+      },
+      {
+        check: () => (isAddedKey(objectBefore, objectAfter, key)),
+        handle: () => ({
+          key, state: 'added', valueAfter: objectAfter[key],
+        }),
+      },
+      {
+        check: () => (isDeletedKey(objectBefore, objectAfter, key)),
+        handle: () => ({
+          key, state: 'deleted', valueBefore: objectBefore[key],
+        }),
+      },
+    ];
 
-  return combined;
+    const { handle } = handleKeysActions.find(({ check }) => check());
+    return handle();
+  });
 };
 
 export default buildAst;
