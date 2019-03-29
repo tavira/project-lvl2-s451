@@ -2,22 +2,32 @@ import fs from 'fs';
 import path from 'path';
 import gendiff from '../src';
 
+const getPathsToTestFiles = (fileNameRecieved1, fileNameRecieved2, fileNameExpected) => {
+  const basePath = '__tests__/__fixtures__';
+  const ext = path.extname(fileNameRecieved1).substring(1);
+  const pathToFile1 = `${basePath}/${ext}/${fileNameRecieved1}`;
+  const pathToFile2 = `${basePath}/${ext}/${fileNameRecieved2}`;
+  const pathToExpected = `${basePath}/${ext}/${fileNameExpected}`;
+  return [pathToFile1, pathToFile2, pathToExpected];
+};
+
+
 test.each([
-  ['__tests__/__fixtures__/json/before.json', '__tests__/__fixtures__/json/after.json', '../__tests__/__fixtures__/json/result'],
-  ['__tests__/__fixtures__/empty/empty.json', '__tests__/__fixtures__/empty/fulled.json', '../__tests__/__fixtures__/empty/resultIfEmptyFirst'],
-  ['__tests__/__fixtures__/empty/fulled.json', '__tests__/__fixtures__/empty/empty.json', '../__tests__/__fixtures__/empty/resultIfEmptySecond'],
-  ['__tests__/__fixtures__/json/after.json', '__tests__/__fixtures__/json/after.json', '../__tests__/__fixtures__/json/identityResult'],
-  ['__tests__/__fixtures__/yml/before.yml', '__tests__/__fixtures__/yml/after.yml', '../__tests__/__fixtures__/yml/result'],
-  ['__tests__/__fixtures__/yml/after.yml', '__tests__/__fixtures__/yml/after.yml', '../__tests__/__fixtures__/yml/identityResult'],
-  ['__tests__/__fixtures__/ini/before.ini', '__tests__/__fixtures__/ini/after.ini', '../__tests__/__fixtures__/ini/result'],
-  ['__tests__/__fixtures__/json/nestedBefore.json', '__tests__/__fixtures__/json/nestedAfter.json', '../__tests__/__fixtures__/json/nestedResult'],
-  ['__tests__/__fixtures__/yml/nestedBefore.yml', '__tests__/__fixtures__/yml/nestedAfter.yml', '../__tests__/__fixtures__/yml/nestedResult'],
-  ['__tests__/__fixtures__/ini/nestedBefore.ini', '__tests__/__fixtures__/ini/nestedAfter.ini', '../__tests__/__fixtures__/ini/nestedResult'],
-  ['__tests__/__fixtures__/json/nestedArrayBefore.json', '__tests__/__fixtures__/json/nestedArrayAfter.json', '../__tests__/__fixtures__/json/nestedArrayResult'],
+  getPathsToTestFiles('before.json', 'after.json', 'result'),
+  getPathsToTestFiles('empty.json', 'fulled.json', 'resultIfEmptyFirst'),
+  getPathsToTestFiles('fulled.json', 'empty.json', 'resultIfEmptySecond'),
+  getPathsToTestFiles('after.json', 'after.json', 'identityResult'),
+  getPathsToTestFiles('before.yml', 'after.yml', 'result'),
+  getPathsToTestFiles('after.yml', 'after.yml', 'identityResult'),
+  getPathsToTestFiles('before.ini', 'after.ini', 'result'),
+  getPathsToTestFiles('nestedBefore.json', 'nestedAfter.json', 'nestedResult'),
+  getPathsToTestFiles('nestedBefore.ini', 'nestedAfter.ini', 'nestedResult'),
+  getPathsToTestFiles('nestedBefore.yml', 'nestedAfter.yml', 'nestedResult'),
+  getPathsToTestFiles('nestedArrayBefore.json', 'nestedArrayAfter.json', 'nestedArrayResult'),
 ])(
   'diff between(%s, %s)',
   (pathBefore, pathAfter, pathExpected) => {
-    const expected = fs.readFileSync(path.resolve(__dirname, pathExpected), 'utf-8');
+    const expected = fs.readFileSync(path.resolve(pathExpected), 'utf-8');
     expect(gendiff(pathBefore, pathAfter)).toBe(expected);
   },
 );
