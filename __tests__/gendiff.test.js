@@ -13,17 +13,17 @@ const getPathsToTestFiles = (fileNameRecieved1, fileNameRecieved2, fileNameExpec
 
 
 test.each([
-  // getPathsToTestFiles('before.json', 'after.json', 'result'),
-  // getPathsToTestFiles('empty.json', 'fulled.json', 'resultIfEmptyFirst'),
-  // getPathsToTestFiles('fulled.json', 'empty.json', 'resultIfEmptySecond'),
-  // getPathsToTestFiles('after.json', 'after.json', 'identityResult'),
-  // getPathsToTestFiles('before.yml', 'after.yml', 'result'),
-  // getPathsToTestFiles('after.yml', 'after.yml', 'identityResult'),
+  getPathsToTestFiles('before.json', 'after.json', 'result'),
+  getPathsToTestFiles('empty.json', 'fulled.json', 'resultIfEmptyFirst'),
+  getPathsToTestFiles('fulled.json', 'empty.json', 'resultIfEmptySecond'),
+  getPathsToTestFiles('after.json', 'after.json', 'identityResult'),
+  getPathsToTestFiles('before.yml', 'after.yml', 'result'),
+  getPathsToTestFiles('after.yml', 'after.yml', 'identityResult'),
   getPathsToTestFiles('before.ini', 'after.ini', 'result'),
-  // getPathsToTestFiles('nestedBefore.json', 'nestedAfter.json', 'nestedResult'),
-  // getPathsToTestFiles('nestedBefore.ini', 'nestedAfter.ini', 'nestedResult'),
-  // getPathsToTestFiles('nestedBefore.yml', 'nestedAfter.yml', 'nestedResult'),
-  // getPathsToTestFiles('nestedArrayBefore.json', 'nestedArrayAfter.json', 'nestedArrayResult'),
+  getPathsToTestFiles('nestedBefore.json', 'nestedAfter.json', 'nestedResult'),
+  getPathsToTestFiles('nestedBefore.ini', 'nestedAfter.ini', 'nestedResult'),
+  getPathsToTestFiles('nestedBefore.yml', 'nestedAfter.yml', 'nestedResult'),
+  getPathsToTestFiles('nestedArrayBefore.json', 'nestedArrayAfter.json', 'nestedArrayResult'),
 ])(
   'diff as tree between(%s, %s)',
   (pathBefore, pathAfter, pathExpected) => {
