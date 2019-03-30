@@ -17,7 +17,7 @@ const printProperty = (value, depth) => {
   return value;
 };
 
-const buildDiffAsString = (ast) => {
+const render = (ast) => {
   const buildDiff = (astree, depth = 1) => {
     const printActions = {
       unchanged: el => `${w(depth)}  ${el.key}: ${printProperty(el.valueBefore, depth)}`,
@@ -31,4 +31,4 @@ const buildDiffAsString = (ast) => {
   return buildDiff(ast);
 };
 
-export default buildDiffAsString;
+export default render;
