@@ -24,9 +24,9 @@ const render = (ast) => {
       changed: el => `${w(depth)}+ ${el.key}: ${printProperty(el.valueAfter, depth)}\n${w(depth)}- ${el.key}: ${printProperty(el.valueBefore, depth)}`,
       deleted: el => `${w(depth)}- ${el.key}: ${printProperty(el.valueBefore, depth)}`,
       added: el => `${w(depth)}+ ${el.key}: ${printProperty(el.valueAfter, depth)}`,
-      nested: el => `${w(depth)}  ${el.key}: ${buildDiff(el.children, depth + 2)}`,
+      parent: el => `${w(depth)}  ${el.key}: ${buildDiff(el.children, depth + 2)}`,
     };
-    return `{\n${astree.map(el => printActions[el.state](el)).join('\n')}\n${w(depth - 1)}}`;
+    return `{\n${astree.map(el => printActions[el.type](el)).join('\n')}\n${w(depth - 1)}}`;
   };
   return buildDiff(ast);
 };
