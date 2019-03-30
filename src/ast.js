@@ -15,33 +15,33 @@ const buildAst = (objectBefore, objectAfter) => {
         check: () => (isKeyExistsInTwoObjects(objectBefore, objectAfter, key)
                         && areKeysObjects(objectBefore[key], objectAfter[key])),
         handle: () => ({
-          key, state: 'nested', children: buildAst(objectBefore[key], objectAfter[key]),
+          key, type: 'parent', children: buildAst(objectBefore[key], objectAfter[key]),
         }),
       },
       {
         check: () => (isKeyExistsInTwoObjects(objectBefore, objectAfter, key)
                         && !hasKeyIdentityValues(objectBefore, objectAfter, key)),
         handle: () => ({
-          key, state: 'changed', valueBefore: objectBefore[key], valueAfter: objectAfter[key],
+          key, type: 'changed', valueBefore: objectBefore[key], valueAfter: objectAfter[key],
         }),
       },
       {
         check: () => (isKeyExistsInTwoObjects(objectBefore, objectAfter, key)
                         && hasKeyIdentityValues(objectBefore, objectAfter, key)),
         handle: () => ({
-          key, state: 'unchanged', valueBefore: objectBefore[key], valueAfter: objectAfter[key],
+          key, type: 'unchanged', valueBefore: objectBefore[key], valueAfter: objectAfter[key],
         }),
       },
       {
         check: () => (isAddedKey(objectBefore, objectAfter, key)),
         handle: () => ({
-          key, state: 'added', valueAfter: objectAfter[key],
+          key, type: 'added', valueAfter: objectAfter[key],
         }),
       },
       {
         check: () => (isDeletedKey(objectBefore, objectAfter, key)),
         handle: () => ({
-          key, state: 'deleted', valueBefore: objectBefore[key],
+          key, type: 'deleted', valueBefore: objectBefore[key],
         }),
       },
     ];

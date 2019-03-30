@@ -7,3 +7,9 @@
 [![asciicast](https://asciinema.org/a/CbCzatbQgHHEICCRicELkoqba.svg)](https://asciinema.org/a/CbCzatbQgHHEICCRicELkoqba)
 
 [![asciicast](https://asciinema.org/a/R78hsRAIJOl5Jwvsv9GiihgEQ.svg)](https://asciinema.org/a/R78hsRAIJOl5Jwvsv9GiihgEQ)
+
+Diff as plain text
+[![asciicast](https://asciinema.org/a/bERSWFre3imaiUtymg8xBnKB7.svg)](https://asciinema.org/a/bERSWFre3imaiUtymg8xBnKB7)
+
+Diff as json
+[![asciicast](https://asciinema.org/a/y9Mpwqd9TgDLz47qv20qiUoqT.svg)](https://asciinema.org/a/y9Mpwqd9TgDLz47qv20qiUoqT)
