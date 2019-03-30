@@ -8,10 +8,10 @@ const description = 'Compares two configuration files and shows a difference.';
 program
   .version(version)
   .description(description)
-  .option('-f, --format [type]', 'Output format')
+  .option('-f, --format [type]', 'Output format', 'tree')
   .arguments('<firstConfig> <secondConfig>')
   .action((firstConfig, secondConfig) => {
-    const diff = gendiff(firstConfig, secondConfig);
+    const diff = gendiff(firstConfig, secondConfig, program.format);
     console.log(diff);
   });
 
