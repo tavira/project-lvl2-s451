@@ -24,7 +24,6 @@ const printProperty = (prop) => {
 const render = (ast) => {
   const buildDiff = (astree, elParentName = '') => {
     const printActions = {
-      // unchanged: el => `Property '${elParentName}${el.key}' was not changed`,
       deleted: el => `Property '${elParentName}${el.key}' was removed`,
       added: el => `Property '${elParentName}${el.key}' was added with value: ${printProperty(el.valueAfter)}`,
       changed: el => `Property '${elParentName}${el.key}' was updated. From ${printProperty(el.valueBefore)} to ${printProperty(el.valueAfter)}`,
