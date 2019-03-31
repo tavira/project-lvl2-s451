@@ -35,10 +35,13 @@ const testFilesMapping = [
   ['nestedBefore.ini', 'nestedAfter.ini', 'plainNestedResult', 'plain'],
   ['nestedBefore.yml', 'nestedAfter.yml', 'plainNestedResult', 'plain'],
   ['nestedArrayBefore.json', 'nestedArrayAfter.json', 'plainNestedArrayResult', 'plain'],
+  ['nestedArrayBefore.json', 'nestedArrayAfter.json', 'jsonNestedArrayResult', 'json'],
+  ['before.ini', 'after.ini', 'jsonResult', 'json'],
+  ['nestedBefore.yml', 'nestedAfter.yml', 'jsonNestedResult', 'json'],
 ];
 
 test.each(testFilesMapping)(
-  'diff as tree between(%s, %s)',
+  'diff between(%s, %s) ',
   (fileNameBefore, fileNameAfter, fileNameResult, format = 'tree') => {
     const [
       pathBefore,
